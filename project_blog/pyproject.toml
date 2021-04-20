@@ -1,0 +1,57 @@
+[tool.poetry]
+name = "project_blog"
+version = "04.03.2021"
+description = "Sections 1 - 3 from django 3 book"
+authors = ["Paweł Benkowski <pawlo97.pb@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+django = "^3.1.7"
+
+[tool.poetry.dev-dependencies]
+black = "^20.8b1"
+isort = "^5.7.0"
+flakehell = "^0.9.0"
+pylint = "^2.7.2"
+pyflakes = "^2.3.0"
+
+[tool.black]
+line-length = 79
+target-version = ['py38']
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs        
+    | \.git         
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+)
+'''
+
+[tool.isort]
+profile = "django"
+
+[tool.flakehell]
+format = "colored"
+exclude = [".venv"]
+max_line_length = 79
+show_source = true
+inline-quotes = "double"
+
+[tool.flakehell.plugins]
+pyflakes = ["+*"]
+pycodestyle = ["+*", "-E501"]
+pylint = ["+*", "-C0301", "-R0903"]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
