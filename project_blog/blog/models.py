@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from taggit.managers import TaggableManager
 
 STATUS_CHOICES = (("draft", "Draft"), ("published", "Published"))
 
@@ -46,6 +47,8 @@ class Post(models.Model):
     # Pierwszy manager zadeklarowany w modelu jest domyślnym
     objects = models.Manager()
     published = PublishedManager()
+    # Zarejestrować to dla każdego modelu który chcemy tagować
+    tags = TaggableManager()
 
     title = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250, unique_for_date="publish")

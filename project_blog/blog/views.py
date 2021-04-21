@@ -1,41 +1,52 @@
 """Views for blog application
 """
-# from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.conf import settings
 from django.core.mail import send_mail
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView
+from taggit.models import Tag
 
-from blog.models import Post, Comment
-
-from blog.forms import EmailPostForm, CommentForm
-
-# Function way
-# def post_list(request):
-#     object_list = Post.published.all()
-#     paginator = Paginator(object_list=object_list, per_page=3)
-#     page = request.GET.get("page")
-#     try:
-#         posts = paginator.page(page)
-#     except PageNotAnInteger:
-#         # Jeżeli dostaliśmy nie-int'a to zwracamy 1-wszą stronę
-#         posts = paginator.page(1)
-#     except EmptyPage:
-#         # Jeżeli dostaliśmy stronę 5
-#         # podczas gdy mamy w sumie 3 strony zwrócimy stronę 3
-#         posts = paginator.page(paginator.num_pages)
-#     return render(
-#         request, "blog/post/list.html", {"page": page, "posts": posts}
-#     )
+from blog.forms import CommentForm, EmailPostForm
+from blog.models import Comment, Post
 
 
-class PostListView(ListView):
-    """Class based way of creating views"""
+def post_list(request, tag_slug=None):
+    """Return list of
 
-    queryset = Post.published.all()
-    context_object_name = "posts"
-    paginate_by = 3
-    template_name = "blog/post/list.html"
+    Args:
+        request ([type]): [description]
+        tag_slug ([type], optional): Tags to filter by. Defaults to None.
+
+    Returns:
+        [type]: [description]
+    """
+    object_list = Post.published.all()
+    tag = None
+
+    # Do the tag filtering if tag_slug was provided
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        object_list = object_list.filter(tags__in=[tag])
+
+    # Pagination stuff
+    paginator = Paginator(object_list=object_list, per_page=3)
+    page = request.GET.get("page")
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        # Jeżeli dostaliśmy nie-int'a to zwracamy 1-wszą stronę
+        posts = paginator.page(1)
+    except EmptyPage:
+        # Jeżeli dostaliśmy stronę 5
+        # podczas gdy mamy w sumie 3 strony zwrócimy stronę 3
+        posts = paginator.page(paginator.num_pages)
+
+    return render(
+        request,
+        "blog/post/list.html",
+        {"page": page, "posts": posts, "tag": tag},
+    )
 
 
 def post_detail(request, year, month, day, post):
@@ -111,3 +122,12 @@ def post_share(request, post_id):
         "blog/post/share.html",
         {"post": post, "form": form, "sent": sent},
     )
+
+
+# class PostListView(ListView):
+#     """Class based way of creating views"""
+
+#     queryset = Post.published.all()
+#     context_object_name = "posts"
+#     paginate_by = 3
+#     template_name = "blog/post/list.html"

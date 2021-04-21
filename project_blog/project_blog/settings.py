@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
+from decouple import config
+
 # Aby skonfigurować zezwnętrzny email trzeba podać:
 # EMAIL_HOST - server SMTP default localhost
 # EMAIL_PORT - port SMTP default 25
@@ -20,8 +22,8 @@ import os
 # EMAIL_USE_TLS - czy używać bezpiecznego połączenia TLS
 # EMAIL_USE_SSL - czy niejawnie używać SSL
 EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = "bennykayer@gmail.com"
-EMAIL_HOST_PASSWORD = "51184C6a"
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
@@ -54,6 +56,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "blog.apps.BlogConfig",
+    "taggit",
 ]
 
 MIDDLEWARE = [
