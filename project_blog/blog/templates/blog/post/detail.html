@@ -13,6 +13,19 @@
             Udostępnij post
         </a>
     </p>
+    {% comment %} 
+    Podobne posty
+    {% endcomment %}
+    <h2>Podobne posty</h2>
+    {% for post in similar_posts %}
+        <p>
+            <a href="{{ post.get_absolute_url }}">
+                {{ post.title }}
+            </a>
+        </p>
+        {% empty %}
+            Nie ma podobnych postów
+    {% endfor %}
     {% comment %}
     1. W języku szablonów wywołanie metod bez nawiasów 
     2. with deklaruje scope dla nowej zmiennej do użycia w środku, dobre dla oszczędzania zapytań do bazy

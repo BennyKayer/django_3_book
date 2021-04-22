@@ -7,6 +7,10 @@ from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView
 from taggit.models import Tag
 
+# Funkcja agregacji Count z baz danych
+# jest też Avg, Max, Min
+from django.db.models import Count
+
 from blog.forms import CommentForm, EmailPostForm
 from blog.models import Comment, Post
 
@@ -87,10 +91,30 @@ def post_detail(request, year, month, day, post):
     else:
         comment_form = CommentForm()
 
+    # podobne posty
+    # bez flat zwraca liste tuple'i - [(1,), (2, ), ...] z daje normalnie [1, 2, ...]
+    post_tags_ids = post.tags.values_list("id", flat=True)
+    # filtrujemy aby otrzymać posty zawierające te same tagi z wyłączeniem obecnego posta
+    similar_posts = Post.published.filter(tags__in=post_tags_ids).exclude(
+        id=post.id
+    )
+    # dodajemy licznik same_tags i malejąco zwracamy na jego podstawie posty
+    # czyli post mający 3 takie same tagi będzie przed tym z 2 takimi samymi
+    # w 2 kolejności sortujemy po najnowszych (jeżeli 2 posty mają np. po 3 takie same tagi)
+    # ograniczamy listę rekomendacji do 4
+    similar_posts = similar_posts.annotate(same_tags=Count("tags")).order_by(
+        "-same_tags", "-publish"
+    )[:4]
+
     return render(
         request,
         "blog/post/detail.html",
-        {"post": post, "comments": comments, "comment_form": comment_form},
+        {
+            "post": post,
+            "comments": comments,
+            "comment_form": comment_form,
+            "similar_posts": similar_posts,
+        },
     )
 
 
