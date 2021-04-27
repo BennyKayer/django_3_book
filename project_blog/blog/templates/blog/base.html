@@ -1,5 +1,11 @@
-{% comment %} Ładuje pliki statyczne, dzięki temu można potem używać znacznika
-static {% endcomment %} {% load static %}
+{% comment %} 
+Załadowanie własnych znaczników z templatetags/blog_tags
+{% endcomment %}
+{% load blog_tags %}
+{% comment %} 
+Ładuje pliki statyczne, dzięki temu można potem używać znacznika static
+{% endcomment %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -16,7 +22,25 @@ static {% endcomment %} {% load static %}
         <div id="content">{% block content %} {% endblock %}</div>
         <div id="sidebar">
             <h2>Mój blog</h2>
-            <p>To jest mój blog.</p>
+            <p>To jest mój blog. Dotychczas opublikowałem {% total_posts %} postów.</p>
+
+            <h3>Najnowsze posty</h3>
+            {% comment %} 
+            Przekazujemy tutaj count jako 3
+            {% endcomment %}
+            {% show_latest_posts 3 %}
+
+            <h3>Najczęściej komentowane posty</h3>
+            {% get_most_commented_posts as most_commented_posts %}
+            <ul>
+                {% for post in most_commented_posts %}
+                    <li>
+                        <a href="{{ post.get_absolute_url }}">
+                            {{ post.title }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
     </body>
 </html>
