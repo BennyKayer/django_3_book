@@ -3,12 +3,20 @@
 2. 1wszy rodzaj tagów simple_tag => Przetworzenie danych i zwrot ciągu tekstowego
 3. 2gi rodzaj tagów inclusion_tag => Przetworzenie danych i zwrot wygenerowanego szablonu
 """
+import markdown
 from django import template
-from blog.models import Post
 from django.db.models import Count
+from django.utils.safestring import mark_safe
+
+from blog.models import Post
 
 # musi być register żeby było uznawane za znacznik
 register = template.Library()
+
+
+@register.filter(name="markdown")
+def markdown_format(text):
+    return mark_safe(markdown.markdown(text))
 
 
 # można pominąć nawiasy przy simple tag, domyślnie i tak będzie taka nazwa

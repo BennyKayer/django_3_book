@@ -1,4 +1,6 @@
 {% extends 'blog/base.html' %}
+{% comment %} Ładowanie custom filtrów i znaczników {% endcomment %}
+{% load blog_tags %}
 {% block title %}Mój blog{% endblock title %}
 {% block content %}
     <h1>Mój blog</h1>
@@ -21,7 +23,7 @@
             {% endfor %}
         </p>
         <p class="date">Opublikowany {{ post.publish }} przez {{ post.author }}</p>
-        {{ post.body|truncatewords:30|linebreaks }} 
+        {{ post.body/markdown/truncatewords_html:30 }} 
     {% endfor %}
     {% include "pagination.html" with page=posts %}
 {% endblock content %}
