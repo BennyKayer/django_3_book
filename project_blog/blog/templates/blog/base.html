@@ -24,6 +24,10 @@ Załadowanie własnych znaczników z templatetags/blog_tags
             <h2>Mój blog</h2>
             <p>To jest mój blog. Dotychczas opublikowałem {% total_posts %} postów.</p>
 
+            <p>
+                <a href="{% url "blog:post_feed" %}">Subskrybuj kanał RSS</a>
+            </p>
+
             <h3>Najnowsze posty</h3>
             {% comment %} 
             Przekazujemy tutaj count jako 3

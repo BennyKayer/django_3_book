@@ -23,7 +23,7 @@
             {% endfor %}
         </p>
         <p class="date">Opublikowany {{ post.publish }} przez {{ post.author }}</p>
-        {{ post.body/markdown/truncatewords_html:30 }} 
+        {{ post.body|markdown|truncatewords_html:30 }} 
     {% endfor %}
     {% include "pagination.html" with page=posts %}
 {% endblock content %}
