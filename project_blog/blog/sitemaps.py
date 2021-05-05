@@ -2,6 +2,7 @@
 łatwiej im wtedy to indexować
 """
 from django.contrib.sitemaps import Sitemap
+
 from blog.models import Post
 
 

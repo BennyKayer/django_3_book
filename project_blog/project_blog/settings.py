@@ -60,6 +60,8 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "django.contrib.sitemaps",
     "blog.apps.BlogConfig",
+    # Do wyszukiwania pełnotekstowego
+    "django.contrib.postgres",
 ]
 
 MIDDLEWARE = [

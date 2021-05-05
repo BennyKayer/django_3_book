@@ -4,12 +4,11 @@ if the user already exists
 # Builtins
 from typing import Any, Optional
 
+# Third party
+from decouple import config
 # Django
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
-
-# Third party
-from decouple import config
 
 
 class Command(BaseCommand):
