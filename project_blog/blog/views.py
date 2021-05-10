@@ -185,6 +185,17 @@ def post_search(request):
                 # Z wagami
                 .filter(rank__gte=0.3).order_by("-rank")
             )
+
+            # Podobieństwo trygramu
+            # trzeba coś kombinować z docker-em i extensions postgresa
+            # i nie działa
+            # results = (
+            #     Post.objects.annotate(
+            #         similarity=TrigramSimilarity("title", query)
+            #     )
+            #     .filter(similarity__gt=0.1)
+            #     .order_by("similarity")
+            # )
     return render(
         request,
         "blog/post/search.html",
