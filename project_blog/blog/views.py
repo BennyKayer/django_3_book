@@ -167,15 +167,23 @@ def post_search(request):
             # ).filter(search=query)
 
             # Stemming
-            search_vector = SearchVector("title", "body")
+            # Wersja bez wag zapytań
+            # search_vector = SearchVector("title", "body")
+            # Zapytania wagowane title ważniejszy niż body
+            # Są 4 D, C, B i A odpowiadają im 0.1, 0.2, 0.4 i 1.0
+            search_vector = SearchVector("title", weight="A") + SearchVector(
+                "body", weight="B"
+            )
             search_query = SearchQuery(query)
             results = (
                 Post.objects.annotate(
                     search=search_vector,
                     rank=SearchRank(search_vector, search_query),
                 )
-                .filter(search=search_query)
-                .order_by("-rank")
+                # Bez wag
+                # .filter(search=search_query)
+                # Z wagami
+                .filter(rank__gte=0.3).order_by("-rank")
             )
     return render(
         request,
