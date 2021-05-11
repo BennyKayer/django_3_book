@@ -1,0 +1,49 @@
+[tool.poetry]
+name = "social_media"
+version = "0.1.0"
+description = ""
+authors = ["Paweł Benkowski <pawlo97.pb@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+django = "^3.2.2"
+python-social-auth = "^0.3.6"
+
+[tool.poetry.dev-dependencies]
+black = "^21.5b1"
+flakehell = "^0.9.0"
+isort = "^5.8.0"
+pycodestyle = "^2.7.0"
+pyflakes = "^2.3.1"
+pylint = "^2.8.2"
+
+[tool.black]
+line-length = 79
+
+[tool.isort]
+profile = "django"
+known_django = "django"
+known_rest = "rest_framework"
+sections = ["FUTURE", "STDLIB", "DJANGO", "REST", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+import_heading_stdlib = "Builtins"
+import_heading_django = "Django"
+import_heading_firstparty = "First Party"
+import_heading_thirdparty = "Third party"
+import_heading_localfolder = "Local"
+import_heading_rest = "Django REST Framework"
+
+[tool.flakehell]
+format = "colored"
+exclude = [".venv", "manage.py", "apps.py", "migrations", "asgi.py", "urls.py", "wsgi.py"]
+max_line_length = 79
+show_source = true
+
+[tool.flakehell.plugins]
+pyflakes = ["+*", "-F401"]
+pycodestyle = ["+*", "-E501"]
+pylint = ["+*", "-C0330", "-C0301", "-R0903", "-W0223", "-W0613"]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
