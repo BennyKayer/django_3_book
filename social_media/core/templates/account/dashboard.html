@@ -4,5 +4,5 @@
 
 {% block content %}
     <h1>Panel główny</h1>
-    <p>Witaj w panelu głównym</p>
+    <p>Witaj w panelu głównym. Możesz <a href="{% url 'edit' %}">edytować profil</a> lub <a href="{% url 'password_change' %}">zmienić hasło</a>.</p>
 {% endblock content %}

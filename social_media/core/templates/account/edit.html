@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Edycja konta{% endblock title %}
+
+{% block content %}
+    <h1>Edycja konta</h1>
+    <p>Ustawienia konta możesz zmienić za pomocą poniższego formularza:</p>
+    <form action="." method="post" enctype='multipart/form-data'>
+        {{ user_form.as_p }}
+        {{ profile_form.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" value="Zapisz zmiany"></p>
+    </form>
+{% endblock content %}
